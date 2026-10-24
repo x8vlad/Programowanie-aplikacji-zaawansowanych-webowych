@@ -1,3 +1,13 @@
+/*
+Elektro-Bud punkt 2: Produkty):
+    - wyświetlanie listy produktów,
+    - dodawanie produktu,
+    - edycja produktu,
+    - usuwanie produktu,
+    - wyszukiwanie produktu po EAN albo nazwie,
+    - przechowywanie danych w localStorage.
+ */
+
 interface Product {
     id: number;
     ean: string;
