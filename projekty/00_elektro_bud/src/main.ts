@@ -29,7 +29,6 @@ const inputLevel = document.getElementById("level") as HTMLInputElement;
 
 //array to store productsL
 const products: Product[] = [];
-
 //id to incremtn after clicking the btn
 let idIncrement : number = 1;
 
@@ -57,6 +56,7 @@ formAddingProduct.addEventListener("submit", event => {
     if(editingID === null) {
         idIncrement++;
         products.push(product);
+        saveProduct();
         console.log(products);
     } else{
         product.id = editingID;
@@ -64,6 +64,7 @@ formAddingProduct.addEventListener("submit", event => {
         if(indexProduct > -1) {
             products[indexProduct] = product;
         }
+        saveProduct();
     }
     resetForm();
     renderTableProduct(products);
@@ -109,6 +110,7 @@ tableBodyProduct.addEventListener("click", event => {
         if(productIndex > -1) {
             products.splice(productIndex, 1);
             renderTableProduct(products);
+            saveProduct();
         }
 
         if(editingID == id) {
@@ -173,3 +175,26 @@ function resetForm(): void {
     buttonAdd.textContent = "Dodaj produkt";
     formAddingProduct.reset();
 }
+
+function saveProduct() : void {
+    let productsArray: string = JSON.stringify(products);
+    localStorage.setItem("products", productsArray);
+    // console.log("saved", productsArray);
+}
+
+function loadProducts(): Product[] {
+    const getProductsArray : string | null = localStorage.getItem("products");
+
+    if(getProductsArray === null) {
+        return [];
+    }
+    return JSON.parse(getProductsArray);
+}
+for(const p of loadProducts()){
+    products.push(p)
+    console.log(p)
+    if(p.id >= idIncrement){
+        idIncrement = p.id + 1;
+    }
+}
+renderTableProduct(products)

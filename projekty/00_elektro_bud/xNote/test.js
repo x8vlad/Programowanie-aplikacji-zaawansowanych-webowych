@@ -60,3 +60,4 @@ console.log("From return func the finds index: " + findestIndex);
 // const value: string = inputElement.value;
 // const entRes = document.getElementById("products-body");
 // entRes.textContent = value;
+//    //[ [] ] => [] (p)

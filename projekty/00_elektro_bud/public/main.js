@@ -1,4 +1,13 @@
 "use strict";
+/*
+Elektro-Bud punkt 2: Produkty):
+    - wyświetlanie listy produktów,
+    - dodawanie produktu,
+    - edycja produktu,
+    - usuwanie produktu,
+    - wyszukiwanie produktu po EAN albo nazwie,
+    - przechowywanie danych w localStorage.
+ */
 const inputEAN = document.getElementById("ean");
 const inputNameProduct = document.getElementById("nameProduct");
 const inputCategory = document.getElementById("category");
@@ -30,6 +39,7 @@ formAddingProduct.addEventListener("submit", event => {
     if (editingID === null) {
         idIncrement++;
         products.push(product);
+        saveProduct();
         console.log(products);
     }
     else {
@@ -38,6 +48,7 @@ formAddingProduct.addEventListener("submit", event => {
         if (indexProduct > -1) {
             products[indexProduct] = product;
         }
+        saveProduct();
     }
     resetForm();
     renderTableProduct(products);
@@ -76,6 +87,7 @@ tableBodyProduct.addEventListener("click", event => {
         if (productIndex > -1) {
             products.splice(productIndex, 1);
             renderTableProduct(products);
+            saveProduct();
         }
         if (editingID == id) {
             editingID = null;
@@ -131,3 +143,23 @@ function resetForm() {
     buttonAdd.textContent = "Dodaj produkt";
     formAddingProduct.reset();
 }
+function saveProduct() {
+    let productsArray = JSON.stringify(products);
+    localStorage.setItem("products", productsArray);
+    // console.log("saved", productsArray);
+}
+function loadProducts() {
+    const getProductsArray = localStorage.getItem("products");
+    if (getProductsArray === null) {
+        return [];
+    }
+    return JSON.parse(getProductsArray);
+}
+for (const p of loadProducts()) {
+    products.push(p);
+    console.log(p);
+    if (p.id >= idIncrement) {
+        idIncrement = p.id + 1;
+    }
+}
+renderTableProduct(products);
